@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- imported google font  -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display&display=swap" rel="stylesheet">
+    
+    <header>
+      <title>Expenses Tracker</title>
+    </header>
+    <style>
+      body {
+        font-family: 'Red Hat Display', sans-serif;
+        text-align: center;
+      }
+
+      table {
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        min-width: 400px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      thead {
+        background-color: #009879;
+        color: #ffffff;
+        text-align: center;
+      }
+
+      tbody {
+        padding: 12px 15px;
+      }
+
+      tfoot {
+        font-weight: bold;
+        color: #009879;
+      }
+
+      input {
+        font-family: 'Red Hat Display', sans-serif;
+      }
+
+
+      button {
+        font-family: 'Red Hat Display', sans-serif;
+        background-color: #009879;
+        color: #ffffff;
+        border-color: white;
+        border-radius: 8px;
+      }
+
+    </style>
+  </head>
+  <body>
+    
+    <h1>Expenses Tracker</h1>
+
+    <input type="text" id="description-input">
+    <input type="date" id="date-input">
+    <input type="number" id="value-input">
+    <input type="submit" id="submit" class="button">
+
+    <br>
+    <!-- initialising table with headers -->
+    <table id="myTable"> 
+      <thead>
+        <tr>
+          <td>Expense</td>
+          <td>Date</td>
+          <td>Value</td>
+        </tr>
+      </thead>
+      <tbody id='table-body'>
+
+      </tbody>
+      <tfoot>
+        <td> </td>
+        <td>Sum</td>
+        <td id="sum-cell"></td>
+      </tfoot>
+
+    </table>
+    
+    <br>
+
+    <script>
+      const myTable = document.getElementById('myTable');
+      const tableBody = document.getElementById('table-body')
+      const sumCellsValue = document.getElementById('sum-cell')
+
+      function addExpense() {
+        //creates rows and collumns for each value
+        const row = tableBody.insertRow(0);
+        let expensesCell = row.insertCell(0);
+        let dateCell = row.insertCell(1);
+        let valueCell = row.insertCell(2);
+        let removeCell = row.insertCell(3);
+        //input's user's info
+        expensesCell.innerHTML = expenseInput.value;
+        dateCell.innerHTML = dateInput.value;
+        valueCell.innerHTML = '£' + numberInput.value
+        //individual remove button 
+        let removeButton = document.createElement("BUTTON");
+        row.appendChild(removeButton);
+        removeButton.innerText = 'X';
+        removeButton.addEventListener('click', remove);
+        //calls sum function for each added row
+        sumCell();
+      }
+
+      function remove(event) {
+        let position = event.target.parentElement;
+        position.remove();
+        sumCell();
+      }
+
+      function sumCell() {
+        let arr = document.querySelectorAll('td');
+        let arrLength = (arr.length - 1); //-1 to fix sum bug 
+        let sumOfCells = 0;
+        for (let i = 0; i < arrLength; i++) {
+          if (arr[i].innerText.includes('£')) {
+            let expenseCellValue = arr[i].innerHTML.replace('£', '')
+            sumOfCells = parseInt(expenseCellValue) + parseInt(sumOfCells);
+          }
+        }
+        sumCellsValue.innerText = '£' + sumOfCells;
+      }
+        
+  
+
+      // buttons/ input values 
+      const expenseInput = document.getElementById('description-input');
+      const dateInput = document.getElementById('date-input');
+      const numberInput = document.getElementById('value-input');
+      const submitButton = document.getElementById('submit');
+      submitButton.addEventListener('click', addExpense)
+
+
+    </script>
+  </body>
+
+
+</html>
